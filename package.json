@@ -1,0 +1,16 @@
+{
+  "author": "Gareth Robins <gareth.robins@gmail.com>",
+  "name": "udp_listener",
+  "description": "Listens to incoming traffic and displays on a page",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/grobins/udp_listener.git"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
