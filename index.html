@@ -21,8 +21,8 @@
 
                 var msgtxt = ab2str(msg);
                 
-                var a1s = msgtxt.search("<Accelerometer1>");
-                var a1e = msgtxt.search("</Accelerometer1>");
+                var a1s = msgtxt.search("<LightIntensity>");
+                var a1e = msgtxt.search("</LightIntensity>");
                 var a1v = msgtxt.substring(a1s+16, a1e);
 
 
@@ -54,3 +54,4 @@ Incoming Data:&nbsp;<ul id="thelist"></ul>
 <input type="text" id="outgoingChatMessage">
 </body>
 </html>
+
