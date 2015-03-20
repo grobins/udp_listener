@@ -2,26 +2,37 @@
 <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="/home/gareth/sources/udp_listener/node_modules/socket.io/node_modules/socket.io-client/socket.io.js"></script>
+
+<script src="js/jquery.xml2json.js" type="text/javascript" language="javascript"></script> 
+
     <script>
+            function ab2str(buf) {
+                return String.fromCharCode.apply(null, new Uint8Array(buf));
+            }
+
         $(function(){
             var iosocket = io.connect('http://localhost:8000');
  
             iosocket.on('connect', function () {
-                $('#incomingChatMessages').append($('<li></li>'));
+                $('#thelist').append($('<li></li>'));
 
- /*
-                iosocket.on('message', function(message) {
-                    $('#incomingChatMessages').append($('<li></li>').text(message));
-                });
-*/
-            iosocket.on('message', function(msg) { 
-                /*console.log(msg) ;*/
-                $('#incomingChatMessages').append($('<li></li>').text(msg));
+            iosocket.on('message', function(msg) {
+
+
+                var msgtxt = ab2str(msg);
+                
+                var a1s = msgtxt.search("<Accelerometer1>");
+                var a1e = msgtxt.search("</Accelerometer1>");
+                var a1v = msgtxt.substring(a1s+16, a1e);
+
+
+                console.log(a1v) ;
+                $('#thelist').append($('<li></li>').text(a1v));
 
 }); 
 
                 iosocket.on('disconnect', function() {
-                    $('#incomingChatMessages').append('<li>Disconnected</li>');
+                    $('#thelist').append('<li>Disconnected</li>');
                 });
             });
  
@@ -29,7 +40,7 @@
                 if(event.which == 13) {
                     event.preventDefault();
                     iosocket.send($('#outgoingChatMessage').val());
-                    $('#incomingChatMessages').append($('<li></li>').text($('#outgoingChatMessage').val()));
+                    $('#thelist').append($('<li></li>').text($('#outgoingChatMessage').val()));
                     $('#outgoingChatMessage').val('');
                 }
             });
@@ -37,7 +48,7 @@
     </script>
 </head>
 <body>
-Incoming Chat:&nbsp;<ul id="incomingChatMessages"></ul>
+Incoming Data:&nbsp;<ul id="thelist"></ul>
 
 
 <input type="text" id="outgoingChatMessage">
