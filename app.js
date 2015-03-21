@@ -13,11 +13,5 @@ var app = http.createServer(),
         io.sockets.emit('message', msg);
     });
 
-
-
-
-
-
-
 socket.bind(5555);
 app.listen(8000);

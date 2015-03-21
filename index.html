@@ -2,52 +2,107 @@
 <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="/home/gareth/sources/udp_listener/node_modules/socket.io/node_modules/socket.io-client/socket.io.js"></script>
-
-<script src="js/jquery.xml2json.js" type="text/javascript" language="javascript"></script> 
-
-    <script>
-            function ab2str(buf) {
-                return String.fromCharCode.apply(null, new Uint8Array(buf));
-            }
-
-        $(function(){
-            var iosocket = io.connect('http://localhost:8000');
- 
-            iosocket.on('connect', function () {
-                $('#thelist').append($('<li></li>'));
-
-            iosocket.on('message', function(msg) {
+<script src="/home/gareth/sources/udp_listener/js/d3.v3.js"></script>
 
 
-                var msgtxt = ab2str(msg);
-                
-                var a1s = msgtxt.search("<LightIntensity>");
-                var a1e = msgtxt.search("</LightIntensity>");
-                var a1v = msgtxt.substring(a1s+16, a1e);
+<script src="/home/gareth/sources/udp_listener/js/rickshaw.js" type="text/javascript" language="javascript"></script> 
 
 
-                console.log(a1v) ;
-                $('#thelist').append($('<li></li>').text(a1v));
+
+
+<script>
+function ab2str(buf) {
+    return String.fromCharCode.apply(null, new Uint8Array(buf));
+}
+
+$(function(){
+    var iosocket = io.connect('http://localhost:8000');
+
+    iosocket.on('connect', function () {
+        $('#thelist').append($('<li></li>'));
+
+
+
+
+
+
+
+
+
+
+
+/* Updating based on incoming messages*/
+
+        iosocket.on('message', function(msg) {
+
+
+            var msgtxt = ab2str(msg);
+            
+            var a1s = msgtxt.search("<LightIntensity>");
+            var a1e = msgtxt.search("</LightIntensity>");
+            var a1v = msgtxt.substring(a1s+16, a1e);
+
+
+            var tss = msgtxt.search("<TimeStamp>");
+            var tse = msgtxt.search("</TimeStamp>");
+            var tsv = msgtxt.substring(tss+11, tse);
+
+            console.log(tsv + " " + a1v) ;
+           /* $('#thelist').append($('<li></li>').text(a1v)); */
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }); 
 
-                iosocket.on('disconnect', function() {
-                    $('#thelist').append('<li>Disconnected</li>');
-                });
-            });
- 
-            $('#outgoingChatMessage').keypress(function(event) {
-                if(event.which == 13) {
-                    event.preventDefault();
-                    iosocket.send($('#outgoingChatMessage').val());
-                    $('#thelist').append($('<li></li>').text($('#outgoingChatMessage').val()));
-                    $('#outgoingChatMessage').val('');
-                }
+            iosocket.on('disconnect', function() {
+                $('#thelist').append('<li>Disconnected</li>');
             });
         });
-    </script>
+
+        $('#outgoingChatMessage').keypress(function(event) {
+            if(event.which == 13) {
+                event.preventDefault();
+                iosocket.send($('#outgoingChatMessage').val());
+                $('#thelist').append($('<li></li>').text($('#outgoingChatMessage').val()));
+                $('#outgoingChatMessage').val('');
+            }
+        });
+    });
+
+
+
+
+
+
+
+</script>
 </head>
 <body>
+
+<div id="content">
+    <div id="chart"></div>
+</div>
+
+
+
 Incoming Data:&nbsp;<ul id="thelist"></ul>
 
 
