@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+<script src="/home/gareth/sources/udp_listener/js/smoothie.js"></script>
+    <script type="text/javascript">
+
+      var plotData = new TimeSeries();
+      plotData.append(1426996719587, 850);
+
+      
+      function createTimeline() {
+        var chart = new SmoothieChart();
+        chart.addTimeSeries(plotData, { strokeStyle: 'rgba(0, 255, 0, 1)', fillStyle: 'rgba(0, 255, 0, 0.2)', lineWidth: 4 });
+        chart.streamTo(document.getElementById("chart"), 500);
+      }
+
+
+
+    </script>
+  </head>
+  <body onload="createTimeline()">
+
+    <p>The <em>hello world</em> of <a href="../">Smoothie Charts</a>. View source.</p>
+
+    <canvas id="chart" width="600" height="300"></canvas>
+  </body>
+
+  <script type="text/javascript">createTimeline()</script>
+</html>
