@@ -1,0 +1,13 @@
+{
+  "name": "udp_listener",
+  "version": "0.0.0",
+  "description": "app.js listens to port 5555 for any UDP traffic and forwards to port 8000",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "express": "4.10.2",
+    "socket.io": "1.2.0"
+  }
+}

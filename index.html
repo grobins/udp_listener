@@ -1,88 +1,38 @@
 <html>
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script src="/home/gareth/sources/udp_listener/node_modules/socket.io/node_modules/socket.io-client/socket.io.js"></script>
-<script src="/home/gareth/sources/udp_listener/js/smoothie.js"></script>
+<!-- <script src="/node_modules/socket.io/lib/socket.js"></script> -->
+<script src="/socket.io/socket.io.js"></script>
 <script>
-
-      function createTimeline() {
-
-        var chart = new SmoothieChart({maxValueScale:1.5,scaleSmoothing:1,grid:{fillStyle:'#ffffff',strokeStyle:'transparent',sharpLines:true},labels:{fillStyle:'#000000'}}),
-            canvas = document.getElementById('smoothie-chart'),
-            series = new TimeSeries();
-
-
-
-        chart.addTimeSeries(plotData, { 
-            strokeStyle:'#000000', 
-            fillStyle:'#ffffff', 
-            lineWidth: 0.5 });
-        chart.streamTo(document.getElementById("chart"), 500);
-      }
-
-      var plotData = new TimeSeries();
-
-function ab2str(buf) {
-    return String.fromCharCode.apply(null, new Uint8Array(buf));
-}
-
 $(function(){
-    var iosocket = io.connect('http://localhost:8000');
+    
+    function ab2str(buf) {
+        return String.fromCharCode.apply(null, new Uint8Array(buf));
+    }
+    
+    var iosocket = io.connect('http://localhost:3000');
 
     iosocket.on('connect', function () {
-        $('#thelist').append($('<li></li>'));
+        console.log('connected')
+    });
+    
+    iosocket.on('message', function(msg) {
+        $('#message').text(ab2str(msg))
+    }); 
 
-/* Updating based on incoming messages*/
-
-        iosocket.on('message', function(msg) {
-
-
-            var msgtxt = ab2str(msg);
-            
-            var a1s = msgtxt.search("<LightIntensity>");
-            var a1e = msgtxt.search("</LightIntensity>");
-            var a1v = msgtxt.substring(a1s+16, a1e);
-
-
-            var tss = msgtxt.search("<TimeStamp>");
-            var tse = msgtxt.search("</TimeStamp>");
-            var tsv = msgtxt.substring(tss+11, tse);
-
-           /* console.log(tsv + " " + a1v) ;*/
-           /* $('#thelist').append($('<li></li>').text(a1v)); */
-        
-
-      plotData.append(tsv, a1v);
-
-}); 
-
-            iosocket.on('disconnect', function() {
-                $('#thelist').append('<li>Disconnected</li>');
-            });
-        });
-
-        $('#outgoingChatMessage').keypress(function(event) {
-            if(event.which == 13) {
-                event.preventDefault();
-                iosocket.send($('#outgoingChatMessage').val());
-                $('#thelist').append($('<li></li>').text($('#outgoingChatMessage').val()));
-                $('#outgoingChatMessage').val('');
-            }
-        });
+    iosocket.on('disconnect', function() {
+        console.log('disconnected')
     });
 
 
 
+});
+
 </script>
+
 </head>
-  <body onload="createTimeline()">
+  
+  <div id="message"></div>
 
-    <canvas id="chart" width="600" height="300"></canvas>
-
-
-<ul id="thelist" style="display:none"></ul>
-
-
-<input style="display:none" type="text" id="outgoingChatMessage">
 </body>
 </html>
