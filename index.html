@@ -17,14 +17,22 @@ $(function(){
     });
     
     iosocket.on('message', function(msg) {
-        $('#message').text(ab2str(msg))
+        console.log('message')
     }); 
 
     iosocket.on('disconnect', function() {
         console.log('disconnected')
     });
 
-
+      // var socket = io();
+      // $('form').submit(function(){
+      //   socket.emit('chat message', $('#m').val());
+      //   $('#m').val('');
+      //   return false;
+      // });
+      // socket.on('chat message', function(msg){
+      //   $('#messages').append($('<li>').text(msg));
+      // });
 
 });
 
