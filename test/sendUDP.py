@@ -8,11 +8,11 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
 
 def executeSomething():
     sendMessage(randomCoordinates())
-    time.sleep(1)
+    time.sleep(0.2)
 
 def sendMessage(msg):
 	print("message: " + msg + " to: " + UDP_IP + ":" + str(UDP_PORT))
-	sock.sendto(msg, (UDP_IP, UDP_PORT))
+	sock.sendto(bytes(msg), (UDP_IP, UDP_PORT))
 
 def randomCoordinates():
 	latitude = -36 + random.random()
