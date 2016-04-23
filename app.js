@@ -1,7 +1,7 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var PORT = 33333;
+var udpport = 33333;
 var HOST = '192.168.2.7';
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
@@ -26,8 +26,5 @@ io.on('connection', function(socket){
 	})
 });
 
-// server.on('message', function (message, remote) {
-// });
 
-
-server.bind(PORT, HOST);
+server.bind(udpport, HOST);
