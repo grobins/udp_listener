@@ -1,8 +1,9 @@
 <html>
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<!-- <script src="/node_modules/socket.io/lib/socket.js"></script> -->
 <script src="/socket.io/socket.io.js"></script>
+<script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script>
 $(function(){
     
@@ -13,34 +14,67 @@ $(function(){
     var iosocket = io.connect('http://localhost:3000');
 
     iosocket.on('connect', function () {
-        console.log('connected')
+        console.log('connected');
     });
     
     iosocket.on('message', function(msg) {
-        console.log('message')
+        var strMessage = ab2str(msg);
+        console.log(strMessage);
+        parseCoordinates(strMessage);
     }); 
 
+
+    function parseCoordinates(strMessage){
+        var json = JSON.parse('[' + strMessage + ']');
+        addMarker(json);
+    }
+
     iosocket.on('disconnect', function() {
-        console.log('disconnected')
+        console.log('disconnected');
     });
 
-      // var socket = io();
-      // $('form').submit(function(){
-      //   socket.emit('chat message', $('#m').val());
-      //   $('#m').val('');
-      //   return false;
-      // });
-      // socket.on('chat message', function(msg){
-      //   $('#messages').append($('<li>').text(msg));
-      // });
+    var map = L.map('map').setView([-35.5423308442, 176.574665847], 5);
+    var marker = L.marker([-35.5423308442, 176.574665847]).addTo(map);
+    var mapLayer = L.tileLayer('http://{s}.base.maps.api.here.com/maptile/2.1/maptile/newest/{scheme}/{z}/{x}/{y}/{size}/{format}?app_id={app_id}&app_code={app_code}', {
+          attribution: 'here',
+          subdomains: '1234',
+          type: 'maptile',
+          scheme: 'reduced.night',
+          app_id: 'YMrZqd46drhr6T3kVqeP',
+          app_code: 'q0eJCAo4G_C9UxTsYvXRPQ',
+          mapID: 'newest',
+          maxZoom: 20,
+          format: 'png8',
+          size: '256'
+        }).addTo(map);
+
+    function addMarker(json){
+        var lon = json[0];
+        var lat = json[1];
+        var newLatLng = new L.LatLng(lon, lat);
+        marker.setLatLng(newLatLng); 
+    }
 
 });
 
 </script>
-
+   <style>
+    html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+    }
+    
+    #map {
+        width: 100%;
+        height: 100%;
+    }
+    </style>
 </head>
-  
-  <div id="message"></div>
+<body>  
+  <div id="map"></div>
+  <div id="message">vdvd</div>
+
 
 </body>
 </html>
