@@ -1,9 +1,13 @@
+## Creates random Lat/Lon coordinates and sends them over UDP
+## to a specified IP and PORT.
+
 import socket
 import time
-import random 
+import random
+import sys
 
+UDP_IP = "192.168.1.186"
 UDP_PORT = 33333
-UDP_IP = "192.168.2.7"
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 def executeSomething():

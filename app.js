@@ -2,7 +2,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var udpport = 33333;
-var HOST = '192.168.2.7';
+var HOST = '192.168.1.186';
 var dgram = require('dgram');
 var udpsocket = dgram.createSocket('udp4');
 
